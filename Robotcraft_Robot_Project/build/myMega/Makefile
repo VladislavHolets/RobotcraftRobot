@@ -13,6 +13,7 @@ PROJECT_OBJS = \
 	project/Encoder.cpp.o \
 	project/RangeSensor.cpp.o \
 	project/Robotcraft_Robot_Project.cpp.o \
+	project/TimerFive.cpp.o \
 
 PLATFORM_CORE_OBJS = \
 	core/abi.cpp.o \
@@ -92,6 +93,14 @@ project/Robotcraft_Robot_Project.cpp.o: ../../Robotcraft_Robot_Project.cpp proje
 project/Robotcraft_Robot_Project.cpp.d: ;
 
 -include project/Robotcraft_Robot_Project.cpp.d 
+
+project/TimerFive.cpp.o: ../../TimerFive.cpp project/TimerFive.cpp.d
+	@$(call mymkdir,$(dir $@))
+	"C:/Users/curab/.arduinocdt/packages/arduino/tools/avr-gcc/5.4.0-atmel3.6.1-arduino2/bin/avr-g++" -c -g -Os -w -std=gnu++11 -fpermissive -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -Wno-error=narrowing -MMD -flto -mmcu=atmega2560 -DF_CPU=16000000L -DARDUINO=10608 -DARDUINO_AVR_MEGA2560 -DARDUINO_ARCH_AVR   -I"C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino" -I"C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/variants/mega" "$<" -o "$@"
+
+project/TimerFive.cpp.d: ;
+
+-include project/TimerFive.cpp.d 
 
 
 core/abi.cpp.o: C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/abi.cpp core/abi.cpp.d

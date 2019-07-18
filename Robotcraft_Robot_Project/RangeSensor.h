@@ -10,17 +10,18 @@
 
 #include <stdint.h>
 
-#define ANALOG_PIN(pin) (pin>=82 && pin<=97)
+#define ANALOG_PIN(pin) (true)
 #define SAMPLES_SIZE 10
 #define ERROR 10
 #define MAX 900
-#define MIN 100
+#define MIN 20
 class RangeSensor {
 private:
 	uint8_t pin;
 	RangeSensor();
-	uint16_t getValue();
+
 public:
+	uint16_t getValue();
 	uint8_t getDistance();
 	RangeSensor(uint8_t pin);
 	virtual ~RangeSensor();
