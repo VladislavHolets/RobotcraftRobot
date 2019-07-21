@@ -1,23 +1,14 @@
 #include <Arduino.h>
-#include <HardwareSerial.h>
 
-#include "Arduino.h"
+#include "DataStruct.h"
+#include "TimerFive.h"
+#include "Definitions.h"
 #include "Encoder.h"
 #include "RangeSensor.h"
-#include "TimerFive.h"
-#include "DataStruct.h"
 
-#define LEFT_SENSOR_PIN A2
-#define RIGHT_SENSOR_PIN A4
-#define FRONT_SENSOR_PIN A3
 
-#define LEFT_MOTOR_ENCODER_1_PIN 18
-#define LEFT_MOTOR_ENCODER_2_PIN 19
-#define RIGHT_MOTOR_ENCODER_1_PIN 2
-#define RIGHT_MOTOR_ENCODER_2_PIN 3
-
-volatile struct Data *previous;
-volatile struct Data *current;
+volatile struct Data previous;
+volatile struct Data current;
 
 RangeSensor LeftS(LEFT_SENSOR_PIN);
 RangeSensor RightS(RIGHT_SENSOR_PIN);
@@ -28,8 +19,6 @@ Encoder RightM(RIGHT_MOTOR_ENCODER_1_PIN, RIGHT_MOTOR_ENCODER_2_PIN);
 void TimerISR();
 //TODO: create class Motor, compose Encoder object into Motor Object so that it will be possible to create setPosition() function.
 void setup() {
-	previous = new Data[1];
-	current = new Data[1];
 	LeftM.write(0);
 	RightM.write(0);
 	Serial.begin(115200);
@@ -55,20 +44,21 @@ void loop() {
 }
 
 void TimerISR() {
-	previous->encoders[LEFT] = current->encoders[LEFT];
-	previous->encoders[RIGHT] = current->encoders[RIGHT];
-	current->distance[FRONT] = FrontS.getDistance();
-	current->distance[LEFT] =  LeftS.getDistance();
-	current->distance[RIGHT] = RightS.getDistance();
 
+	previous.encoders[LEFT] = current.encoders[LEFT];
+	previous.encoders[RIGHT] = current.encoders[RIGHT];
 
-	current->encoders[LEFT] = LeftM.read();
-	current->encoders[RIGHT] = RightM.read();
+	current.distance[FRONT] = FrontS.getDistance();
+	current.distance[LEFT] =  LeftS.getDistance();
+	current.distance[RIGHT] = RightS.getDistance();
 
-	String msg = " : " +String(current->distance[LEFT])
-			+ " : " + String(current->distance[FRONT])
-			+ " : " + String(current->distance[RIGHT])
-			+ " : " + String(current->encoders[LEFT] - previous->encoders[LEFT])
-			+ " : " + String(current->encoders[RIGHT]- previous->encoders[RIGHT]);
+	current.encoders[LEFT] = LeftM.read();
+	current.encoders[RIGHT] = RightM.read();
+
+	String msg = " : " +String(current.distance[LEFT])
+			+ " : " + String(current.distance[FRONT])
+			+ " : " + String(current.distance[RIGHT])
+			+ " : " + String(current.encoders[LEFT] - previous.encoders[LEFT])
+			+ " : " + String(current.encoders[RIGHT]- previous.encoders[RIGHT]);
 	Serial.println(msg);
 }

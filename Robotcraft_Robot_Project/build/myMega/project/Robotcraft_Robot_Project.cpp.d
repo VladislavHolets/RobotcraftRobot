@@ -11,7 +11,6 @@ project/Robotcraft_Robot_Project.cpp.o: \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/USBAPI.h \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/Arduino.h \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/variants/mega/pins_arduino.h \
- C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/HardwareSerial.h \
- ../../Encoder.h ../../utility/direct_pin_read.h \
- ../../utility/interrupt_pins.h ../../RangeSensor.h ../../TimerFive.h \
- ../../DataStruct.h
+ ../../DataStruct.h ../../TimerFive.h ../../Definitions.h ../../Encoder.h \
+ ../../utility/direct_pin_read.h ../../utility/interrupt_pins.h \
+ ../../RangeSensor.h

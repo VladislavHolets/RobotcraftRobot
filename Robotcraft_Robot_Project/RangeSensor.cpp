@@ -13,29 +13,33 @@
 RangeSensor::RangeSensor() {
 
 	//Serial.println("No port in RangeSensor object -> while(1){}");
-	while (1) {
-	};
+//	while (1) {
+//	};
+this->pin=0;
 }
 
 uint16_t RangeSensor::getValue() {
 	uint16_t samples[SAMPLES_SIZE];
 	uint16_t average;
 	for (int i = 0; i < SAMPLES_SIZE; i++) {
-		samples[i] = analogRead(this->pin);
-		average += samples[i];
+		//samples[i] = analogRead(this->pin);
+		//average += samples[i];
+		average += analogRead(this->pin);
 	}
 	average /= SAMPLES_SIZE;
-//	if (average > MAX || average < MIN) {
-//		return 0;
-//	}
-//	for (int i = 0; i < SAMPLES_SIZE; i++) {
-//		if ((samples[i] > (average + ERROR))
-//				|| (samples[i] < (average - ERROR))) {
-//			//dangerous part TODO: safetify
-//			// return getValue();
-//			return 0;
-//		}
-//	}
+	/*	if (average > MAX || average < MIN) {
+	 *		return 0;
+	 *	}
+	 */
+	/*	for (int i = 0; i < SAMPLES_SIZE; i++) {
+	 *		if ((samples[i] > (average + ERROR))
+	 *				|| (samples[i] < (average - ERROR))) {
+	 *			//dangerous part TODO: safetify
+	 *			// return getValue();
+	 *			return 0;
+	 *		}
+	 *	}
+	 */
 	return average;
 }
 
