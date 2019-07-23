@@ -12,7 +12,7 @@ endif
 PROJECT_OBJS = \
 	project/Encoder.cpp.o \
 	project/RangeSensor.cpp.o \
-	project/Robotcraft_Robot_Project.cpp.o \
+	project/Robotcraft_Robot_Project_1.cpp.o \
 	project/TimerFive.cpp.o \
 
 PLATFORM_CORE_OBJS = \
@@ -47,19 +47,19 @@ PLATFORM_VARIANT_OBJS = \
 LIBRARIES_OBJS = \
 
 TARGETS = \
-	Robotcraft_Robot_Project.hex \
-	Robotcraft_Robot_Project.eep \
+	Robotcraft_Robot_Project_1.hex \
+	Robotcraft_Robot_Project_1.eep \
 
 all: $(TARGETS)
 
-Robotcraft_Robot_Project.hex: Robotcraft_Robot_Project.elf
-	"C:/Users/curab/.arduinocdt/packages/arduino/tools/avr-gcc/5.4.0-atmel3.6.1-arduino2/bin/avr-objcopy" -O ihex -R .eeprom  "./Robotcraft_Robot_Project.elf" "./Robotcraft_Robot_Project.hex"
+Robotcraft_Robot_Project_1.hex: Robotcraft_Robot_Project_1.elf
+	"C:/Users/curab/.arduinocdt/packages/arduino/tools/avr-gcc/5.4.0-atmel3.6.1-arduino2/bin/avr-objcopy" -O ihex -R .eeprom  "./Robotcraft_Robot_Project_1.elf" "./Robotcraft_Robot_Project_1.hex"
 
-Robotcraft_Robot_Project.eep: Robotcraft_Robot_Project.elf
-	"C:/Users/curab/.arduinocdt/packages/arduino/tools/avr-gcc/5.4.0-atmel3.6.1-arduino2/bin/avr-objcopy" -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0  "./Robotcraft_Robot_Project.elf" "./Robotcraft_Robot_Project.eep"
+Robotcraft_Robot_Project_1.eep: Robotcraft_Robot_Project_1.elf
+	"C:/Users/curab/.arduinocdt/packages/arduino/tools/avr-gcc/5.4.0-atmel3.6.1-arduino2/bin/avr-objcopy" -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0  "./Robotcraft_Robot_Project_1.elf" "./Robotcraft_Robot_Project_1.eep"
 
-Robotcraft_Robot_Project.elf: $(PROJECT_OBJS) $(LIBRARIES_OBJS) core.a
-	"C:/Users/curab/.arduinocdt/packages/arduino/tools/avr-gcc/5.4.0-atmel3.6.1-arduino2/bin/avr-gcc" -w -Os -g -flto -fuse-linker-plugin -Wl,--gc-sections -mmcu=atmega2560  -o "./Robotcraft_Robot_Project.elf" $(PROJECT_OBJS) $(LIBRARIES_OBJS) "./core.a" "-L." -lm
+Robotcraft_Robot_Project_1.elf: $(PROJECT_OBJS) $(LIBRARIES_OBJS) core.a
+	"C:/Users/curab/.arduinocdt/packages/arduino/tools/avr-gcc/5.4.0-atmel3.6.1-arduino2/bin/avr-gcc" -w -Os -g -flto -fuse-linker-plugin -Wl,--gc-sections -mmcu=atmega2560  -o "./Robotcraft_Robot_Project_1.elf" $(PROJECT_OBJS) $(LIBRARIES_OBJS) "./core.a" "-L." -lm
 
 core.a:	$(PLATFORM_CORE_OBJS) $(PLATFORM_VARIANT_OBJS)
 
@@ -68,7 +68,7 @@ clean:
 	-$(RM) *.hex *.eep *.bin *.elf *.a *.ar *.d
 
 size:
-	"C:/Users/curab/.arduinocdt/packages/arduino/tools/avr-gcc/5.4.0-atmel3.6.1-arduino2/bin/avr-size" -A "./Robotcraft_Robot_Project.elf"
+	"C:/Users/curab/.arduinocdt/packages/arduino/tools/avr-gcc/5.4.0-atmel3.6.1-arduino2/bin/avr-size" -A "./Robotcraft_Robot_Project_1.elf"
 
 project/Encoder.cpp.o: ../../Encoder.cpp project/Encoder.cpp.d
 	@$(call mymkdir,$(dir $@))
@@ -86,13 +86,13 @@ project/RangeSensor.cpp.d: ;
 
 -include project/RangeSensor.cpp.d 
 
-project/Robotcraft_Robot_Project.cpp.o: ../../Robotcraft_Robot_Project.cpp project/Robotcraft_Robot_Project.cpp.d
+project/Robotcraft_Robot_Project_1.cpp.o: ../../Robotcraft_Robot_Project_1.cpp project/Robotcraft_Robot_Project_1.cpp.d
 	@$(call mymkdir,$(dir $@))
 	"C:/Users/curab/.arduinocdt/packages/arduino/tools/avr-gcc/5.4.0-atmel3.6.1-arduino2/bin/avr-g++" -c -g -Os -w -std=gnu++11 -fpermissive -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -Wno-error=narrowing -MMD -flto -mmcu=atmega2560 -DF_CPU=16000000L -DARDUINO=10608 -DARDUINO_AVR_MEGA2560 -DARDUINO_ARCH_AVR   -I"C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino" -I"C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/variants/mega" "$<" -o "$@"
 
-project/Robotcraft_Robot_Project.cpp.d: ;
+project/Robotcraft_Robot_Project_1.cpp.d: ;
 
--include project/Robotcraft_Robot_Project.cpp.d 
+-include project/Robotcraft_Robot_Project_1.cpp.d 
 
 project/TimerFive.cpp.o: ../../TimerFive.cpp project/TimerFive.cpp.d
 	@$(call mymkdir,$(dir $@))
