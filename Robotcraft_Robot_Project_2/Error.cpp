@@ -40,7 +40,7 @@ void Error::next(Error now, Error prev) {
 	if (this->type == P_TYPE) {
 		this->value = now.getValue();
 	} else if (this->type == I_TYPE) {
-		this->value=this->value+now.getValue();
+		this->value+=now.getValue();
 	}else if(this->type==D_TYPE){
 		this->value=now.getValue()-prev.getValue();
 	}

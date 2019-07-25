@@ -16,9 +16,12 @@ PID::PID(float p, float i, float d) {
 	this->p = p;
 	this->i = i;
 	this->d = d;
+	this->ProportionalPrev.setType(P_TYPE);
+	this->ProportionalPrev.setValue(0);
 	this->Proportional.setType(P_TYPE);
-	this->Proportional.setValue(0);
+	this->Proportional.setValue(0.0);
 	this->Integral.setType(I_TYPE);
+	this->Integral.setValue(0.0);
 	this->Derivative.setType(D_TYPE);
 	this->timeNew = millis();
 	this->timePrev = millis();
@@ -27,7 +30,7 @@ PID::PID(float p, float i, float d) {
 float PID::calc(float desired, float real) {
 	this->timePrev = this->timeNew;
 	this->timeNew = millis();
-	float deltaT = (this->timeNew - this->timePrev)MILLISECONDS;
+	float deltaT = 100.0 MILLISECONDS;
 	//TODO: make one time stamp for all of the objects
 	this->updateErrors(desired, real);
 	float result = this->p * this->Proportional.getValue()
@@ -36,15 +39,11 @@ float PID::calc(float desired, float real) {
 	return result;
 }
 
-uint8_t PID::normalize(float PIDresult) {
-	if (PIDresult>=0){
-
-	}
-	else{
-		PIDresult=abs(PIDresult);
-
-	}
-	return (uint8_t) PIDresult;
+int16_t PID::normalize(float PIDresult) {
+if (abs(PIDresult)>255){
+	PIDresult=PIDresult/abs(PIDresult)*255;
+}
+	return (int16_t) PIDresult;
 //TODO:function to normalize this value to analogWrite();
 }
 
@@ -53,6 +52,11 @@ void PID::updateErrors(float desired, float real) {
 	this->Proportional.setValue(desired - real);
 	this->Integral.next(this->Proportional);
 	this->Derivative.next(this->Proportional, this->ProportionalPrev);
+//	Serial.println(
+//			"ProportionalPrev:" + String(ProportionalPrev.getValue()) +
+//			" Proportional:" + String(Proportional.getValue()) +
+//			" Integral:" + String(Integral.getValue()) +
+//			" Derivative:" + String(Derivative.getValue()));
 }
 
 void PID::setD(float d) {

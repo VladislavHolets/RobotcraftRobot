@@ -17,21 +17,31 @@
 #define RIGHT_MOTOR_ENCODER_1_PIN 2
 #define RIGHT_MOTOR_ENCODER_2_PIN 3
 
-#define LEFT_MOTOR_PIN 4
-#define RIGHT_MOTOR_PIN 9
-#define LEFT_MOTOR_DIR_PIN 5
-#define RIGHT_MOTOR_DIR_PIN 6
+#define LEFT_MOTOR_PIN 9
+#define RIGHT_MOTOR_PIN 4
+#define LEFT_MOTOR_DIR_PIN 6
+#define RIGHT_MOTOR_DIR_PIN 5
 
-#define LEFT_P 1
-#define LEFT_I 0.1
-#define LEFT_D 0.1
+#define SPEED 200
 
-#define RIGHT_P 1
-#define RIGHT_I 0.1
-#define RIGHT_D 0.1
+#define LEFT_P (40)
+#define LEFT_I (350)
+#define LEFT_D (2)
 
-#define ROBOT_R 5
-#define ROBOT_B 20
-#define ROBOT_C 100
+#define RIGHT_P (40)
+#define RIGHT_I (350)
+#define RIGHT_D (2)
+//
+//#define LEFT_P 3.8 * 0.6
+//#define LEFT_I 17.1
+//#define LEFT_D 0.211
+//
+//#define RIGHT_P 3.8 * 0.6
+//#define RIGHT_I 17.1
+//#define RIGHT_D 0.211
+
+#define ROBOT_R (1.7/100.0)
+#define ROBOT_B (9.5/100.0)
+#define ROBOT_C (298.0*12.0*2.33)
 
 #endif /* DEFINITIONS_H_ */

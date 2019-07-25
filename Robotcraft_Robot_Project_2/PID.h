@@ -28,7 +28,7 @@ public:
 	PID(float p,float i,float d);
 	void updateErrors(float desired,float real);
 	float calc(float desired,float real);
-	uint8_t normalize(float PIDresult);
+	int16_t normalize(float PIDresult);
 	virtual ~PID();
 	void setP(float p);
 	void setI(float i);
