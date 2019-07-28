@@ -11,9 +11,7 @@
 #include <Arduino.h>
 #include <stdint.h>
 
-#define P_TYPE 0
-#define I_TYPE 1
-#define D_TYPE 2
+#include "Definitions.h"
 
 class Error {
 private:

@@ -1,4 +1,5 @@
-project/PID.cpp.o: ../../PID.cpp ../../PID.h ../../Error.h \
+project/PID.cpp.o: ../../PID.cpp ../../PID.h ../../Definitions.h \
+ ../../Error.h \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/Arduino.h \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/binary.h \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/WCharacter.h \

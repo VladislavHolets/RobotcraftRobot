@@ -25,7 +25,7 @@ ISR(TIMER5_OVF_vect)          // interrupt service routine that wraps a user def
 void TimerFive::initialize(long microseconds)
 {
   TCCR5A = 0;                 // clear control register A 
-  TCCR5B = _BV(WGM53);        // set mode as phase and frequency correct pwm, stop the timer
+  TCCR5B = _BV(WGM53);         // set mode as phase and frequency correct pwm, stop the timer
   setPeriod(microseconds);
 }
 

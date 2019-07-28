@@ -9,4 +9,5 @@ project/Error.cpp.o: ../../Error.cpp ../../Error.h \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/Printable.h \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/USBAPI.h \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/Arduino.h \
- C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/variants/mega/pins_arduino.h
+ C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/variants/mega/pins_arduino.h \
+ ../../Definitions.h

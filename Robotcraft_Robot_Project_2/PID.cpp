@@ -7,10 +7,8 @@
 
 #include "PID.h"
 
-PID::PID() {
-	// TODO Auto-generated constructor stub
-
-}
+#include <Arduino.h>
+#include <stdint.h>
 
 PID::PID(float p, float i, float d) {
 	this->p = p;
@@ -30,12 +28,11 @@ PID::PID(float p, float i, float d) {
 float PID::calc(float desired, float real) {
 	this->timePrev = this->timeNew;
 	this->timeNew = millis();
-	float deltaT = 100.0 MILLISECONDS;
 	//TODO: make one time stamp for all of the objects
 	this->updateErrors(desired, real);
 	float result = this->p * this->Proportional.getValue()
-			+ this->i * this->Integral.getValue() * deltaT
-			+ this->d * this->Derivative.getValue() / deltaT;
+			+ this->i * this->Integral.getValue() * DELTA_T
+			+ this->d * this->Derivative.getValue() / DELTA_T;
 	return result;
 }
 

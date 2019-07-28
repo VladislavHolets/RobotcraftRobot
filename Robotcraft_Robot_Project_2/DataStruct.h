@@ -10,13 +10,27 @@
 
 #include <stdint.h>
 
-#define LEFT 0
-#define RIGHT 1
-#define FRONT 2
+
 struct Data{
 	uint8_t distance[3];
 	int32_t encoders[2];
 };
-
-
+struct Velocity {
+	Velocity() {
+		v = 0;
+		w = 0;
+	}
+	float v, w;
+};
+struct Position {
+	Position() {
+		x = 0;
+		y = 0;
+		t = 0;
+	}
+	float x, y, t;
+};
+struct Enc {
+	int32_t left, right;
+};
 #endif /* DATASTRUCT_H_ */

@@ -1,4 +1,5 @@
 project/RangeSensor.cpp.o: ../../RangeSensor.cpp ../../RangeSensor.h \
+ ../../Definitions.h \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/Arduino.h \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/binary.h \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/WCharacter.h \

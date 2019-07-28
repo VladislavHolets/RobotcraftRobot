@@ -10,12 +10,13 @@
 
 #include <stdint.h>
 
+#include "Definitions.h"
 #include "Error.h"
-#define MILLISECONDS /1000.0
+
 //turns to second
 class PID {
 private:
-	PID();
+
 	float p,i,d;
 	uint32_t timePrev;
 	uint32_t timeNew;
