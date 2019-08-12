@@ -1,4 +1,9 @@
 #include <Arduino.h>
+#include <HardwareSerial.h>
+#include <math.h>
+#include <stdint.h>
+#include <WString.h>
+
 #include "DataStruct.h"
 #include "Definitions.h"
 #include "Encoder.h"
@@ -58,7 +63,7 @@ void loop() {
 }
 
 void TimerISR() {
-	current.distance[FRONT] = FrontS.getDistance();
+	current.distance[FRONT] = FrontS.getDistance() ;
 	current.distance[LEFT] = LeftS.getDistance();
 	current.distance[RIGHT] = RightS.getDistance();
 

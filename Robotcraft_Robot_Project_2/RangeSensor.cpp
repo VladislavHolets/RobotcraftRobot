@@ -10,14 +10,6 @@
 #include <Arduino.h>
 #include <stdint.h>
 
-RangeSensor::RangeSensor() {
-
-	//Serial.println("No port in RangeSensor object -> while(1){}");
-//	while (1) {
-//	};
-this->pin=0;
-}
-
 uint16_t RangeSensor::getValue() {
 	uint16_t samples[SAMPLES_SIZE];
 	uint16_t average;

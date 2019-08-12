@@ -1,5 +1,4 @@
-project/Robotcraft_Robot_Project_2.cpp.o: \
- ../../Robotcraft_Robot_Project_2.cpp \
+project/Wheel.cpp.o: ../../Wheel.cpp ../../Wheel.h ../../Encoder.h \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/Arduino.h \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/binary.h \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/WCharacter.h \
@@ -11,9 +10,5 @@ project/Robotcraft_Robot_Project_2.cpp.o: \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/USBAPI.h \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/Arduino.h \
  C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/variants/mega/pins_arduino.h \
- C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/HardwareSerial.h \
- C:/Users/curab/.arduinocdt/packages/arduino/hardware/avr/1.6.23/cores/arduino/WString.h \
- ../../DataStruct.h ../../Definitions.h ../../Encoder.h \
  ../../utility/direct_pin_read.h ../../utility/interrupt_pins.h \
- ../../PID.h ../../Error.h ../../RangeSensor.h ../../ROSData.h \
- ../../TimerFive.h
+ ../../PID.h ../../Definitions.h ../../Error.h

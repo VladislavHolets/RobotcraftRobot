@@ -15,7 +15,7 @@
 class RangeSensor {
 private:
 	uint8_t pin;
-	RangeSensor();
+
 
 public:
 	uint16_t getValue();
