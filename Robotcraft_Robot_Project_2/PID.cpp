@@ -8,9 +8,11 @@
 #include "PID.h"
 
 #include <Arduino.h>
-#include <stdint.h>
 
-PID::PID(float p, float i, float d) {
+#include "Constants.h"
+
+PID::PID(float p, float i, float d, uint8_t dirPin, uint8_t stepPin) :
+		Motor(dirPin, stepPin) {
 	this->p = p;
 	this->i = i;
 	this->d = d;
@@ -30,16 +32,17 @@ float PID::calc(float desired, float real) {
 	this->timeNew = millis();
 	//TODO: make one time stamp for all of the objects
 	this->updateErrors(desired, real);
-	float result = this->p * this->Proportional.getValue()
-			+ this->i * this->Integral.getValue() * DELTA_T
-			+ this->d * this->Derivative.getValue() / DELTA_T;
+	float result =
+			this->p
+					* this->Proportional.getValue() + this->i * this->Integral.getValue() * DELTA_T
+					+ this->d * this->Derivative.getValue() / DELTA_T;
 	return result;
 }
 
 int16_t PID::normalize(float PIDresult) {
-if (abs(PIDresult)>255){
-	PIDresult=PIDresult/abs(PIDresult)*255;
-}
+	if (abs(PIDresult) > 255) {
+		PIDresult = PIDresult / abs(PIDresult) * 255;
+	}
 	return (int16_t) PIDresult;
 //TODO:function to normalize this value to analogWrite();
 }
@@ -54,6 +57,27 @@ void PID::updateErrors(float desired, float real) {
 //			" Proportional:" + String(Proportional.getValue()) +
 //			" Integral:" + String(Integral.getValue()) +
 //			" Derivative:" + String(Derivative.getValue()));
+}
+
+PID::PID(float p, float i, float d) {
+	this->p = p;
+	this->i = i;
+	this->d = d;
+	this->ProportionalPrev.setType(P_TYPE);
+	this->ProportionalPrev.setValue(0);
+	this->Proportional.setType(P_TYPE);
+	this->Proportional.setValue(0.0);
+	this->Integral.setType(I_TYPE);
+	this->Integral.setValue(0.0);
+	this->Derivative.setType(D_TYPE);
+	this->timeNew = millis();
+	this->timePrev = millis();
+
+}
+
+void PID::apply(int16_t PIDresult) {
+	digitalWrite(this->Motor.getDirPin(), PIDresult < 0);
+	analogWrite(this->Motor.getStepPin(), abs(PIDresult));
 }
 
 void PID::setD(float d) {

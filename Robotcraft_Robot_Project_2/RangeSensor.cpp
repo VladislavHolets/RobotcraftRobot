@@ -8,7 +8,7 @@
 #include "RangeSensor.h"
 
 #include <Arduino.h>
-#include <stdint.h>
+#include <math.h>
 
 uint16_t RangeSensor::getValue() {
 	uint16_t samples[SAMPLES_SIZE];
@@ -35,10 +35,10 @@ uint16_t RangeSensor::getValue() {
 	return average;
 }
 
-uint8_t RangeSensor::getDistance() {
+float RangeSensor::getDistance() {
 	uint16_t value = this->getValue();
 	if (value != 0) {
-		return (float) (272600 * pow(this->getValue(), -1.631));
+		return (float) (272600 * pow(this->getValue(), -1.631)) / 100.0;
 	} else {
 		return 0;
 	}

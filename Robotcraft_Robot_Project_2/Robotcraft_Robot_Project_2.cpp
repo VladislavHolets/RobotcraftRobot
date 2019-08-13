@@ -1,108 +1,111 @@
+#include <Adafruit_NeoPixel.h>
 #include <Arduino.h>
-#include <HardwareSerial.h>
-#include <math.h>
-#include <stdint.h>
-#include <WString.h>
+#include <ArduinoHardware.h>
+#include <geometry_msgs/Pose2D.h>
+#include <geometry_msgs/Twist.h>
+#include <geometry_msgs/Vector3.h>
+#include <ros/node_handle.h>
+#include <ros/publisher.h>
+#include <ros/subscriber.h>
+#include <ros.h>
+#include <std_msgs/Float32.h>
+#include <std_msgs/UInt8MultiArray.h>
 
-#include "DataStruct.h"
-#include "Definitions.h"
+#include "Constants.h"
 #include "Encoder.h"
-#include "PID.h"
 #include "RangeSensor.h"
-#include "ROSData.h"
+#include "Robot.h"
 #include "TimerFive.h"
+#include "Wheel.h"
 
-ROSData Msg;
+std_msgs::Float32 front_distance_msg_, left_distance_msg_, right_distance_msg_;
+geometry_msgs::Pose2D pose_msg_;
 
-PID PIDL(LEFT_P, LEFT_I, LEFT_D);
-PID PIDR(RIGHT_P, RIGHT_I, RIGHT_D);
-struct Velocity  robotC = Velocity(), robotD = Velocity();
-struct Position pos = Position();
-struct Enc enc;
+ros::Publisher front_distance_pub_("front_distance", &front_distance_msg_, 2),
+		left_distance_pub_("left_distance", &left_distance_msg_, 2),
+		right_distance_pub_("right_distance", &right_distance_msg_, 2),
+		pose_pub_("pose", &pose_msg_, 2);
 
-volatile struct Data previous;
-volatile struct Data current;
+void rgbLedsMsgCallback(const std_msgs::UInt8MultiArray& msg);
+void cmdVelMsgCallback(const geometry_msgs::Twist& msg);
+void setPoseMsgCallback(const geometry_msgs::Pose2D& msg);
 
-RangeSensor LeftS(LEFT_SENSOR_PIN);
-RangeSensor RightS(RIGHT_SENSOR_PIN);
-RangeSensor FrontS(FRONT_SENSOR_PIN);
+ros::Subscriber<std_msgs::UInt8MultiArray> rgb_leds_sub_("rgb_leds",
+		rgbLedsMsgCallback);
+ros::Subscriber<geometry_msgs::Twist> cmd_vel_sub_("cmd_vel",
+		cmdVelMsgCallback);
+ros::Subscriber<geometry_msgs::Pose2D> set_pose_sub_("set_pose",
+		setPoseMsgCallback);
 
-Encoder LeftM(LEFT_MOTOR_ENCODER_2_PIN, LEFT_MOTOR_ENCODER_1_PIN);
-Encoder RightM(RIGHT_MOTOR_ENCODER_1_PIN, RIGHT_MOTOR_ENCODER_2_PIN);
+ros::NodeHandle node_handler_;
 
-float leftWC = 0, rightWC = 0, leftWD = 0, rightWD = 0;
+Robot Odin(LEFT_SENSOR_PIN, RIGHT_SENSOR_PIN, FRONT_SENSOR_PIN,
+		LEFT_MOTOR_ENCODER_1_PIN, LEFT_MOTOR_ENCODER_2_PIN, LEFT_P, LEFT_I,
+		LEFT_D, LEFT_MOTOR_DIR_PIN, LEFT_MOTOR_STEP_PIN,
+		RIGHT_MOTOR_ENCODER_1_PIN, RIGHT_MOTOR_ENCODER_2_PIN, RIGHT_P, RIGHT_I,
+		RIGHT_D, RIGHT_MOTOR_DIR_PIN, RIGHT_MOTOR_STEP_PIN, NEOPIXEL_PIN,
+		NEOPIXEL_NUM);
 
-void encUpdate();
 void TimerISR();
 //TODO: create class Motor, compose Encoder object into Motor Object so that it will be possible to create setPosition() function.
 void setup() {
-	LeftM.write(0);
-	RightM.write(0);
-
-	Serial.begin(115200);
+	node_handler_.initNode();
+	node_handler_.getHardware()->setBaud(BAUD);
+	node_handler_.advertise(pose_pub_);
+	node_handler_.advertise(right_distance_pub_);
+	node_handler_.advertise(front_distance_pub_);
+	node_handler_.advertise(left_distance_pub_);
+	node_handler_.subscribe(rgb_leds_sub_);
+	node_handler_.subscribe(cmd_vel_sub_);
+	node_handler_.subscribe(set_pose_sub_);
 
 	delay(2000);
-
-	pinMode(RIGHT_MOTOR_DIR_PIN, OUTPUT);
-	pinMode(LEFT_MOTOR_DIR_PIN, OUTPUT);
-
+	Odin.leftWheel.encoder.write(0);
+	Odin.rightWheel.encoder.write(0);
+	Odin.leftWheel.encoder.updateChange();
+	Odin.rightWheel.encoder.updateChange();
 	Timer5.initialize(100000);
 	Timer5.attachInterrupt(TimerISR);
 
 }
 
 void loop() {
+	geometry_msgs::Twist velocity;
+	velocity.linear.x = 0.05;
+}
 
-//	if(Serial.available()>DATA_MIN_SIZE){
-//		Msg.getData();
-//	robotD.v=Msg.getV();
-//	robotD.W=Msg.getW();
-//	}
-//	/\ /\ /\ /\ this is how it is to be finally (supposed)
+inline void rgbLedsMsgCallback(const std_msgs::UInt8MultiArray& msg) {
+	Odin.pixels.setPixelColor(0, msg.data[0], msg.data[1], msg.data[2]);
+	Odin.pixels.setPixelColor(1, msg.data[3], msg.data[4], msg.data[5]);
+}
 
+inline void cmdVelMsgCallback(const geometry_msgs::Twist& msg) {
+	Odin.setDesiredVelocity(msg);
+}
+
+inline void setPoseMsgCallback(const geometry_msgs::Pose2D& msg) {
+	Odin.setPosition(msg);
 }
 
 void TimerISR() {
-	current.distance[FRONT] = FrontS.getDistance() ;
-	current.distance[LEFT] = LeftS.getDistance();
-	current.distance[RIGHT] = RightS.getDistance();
+	Odin.leftWheel.encoder.write(Odin.leftWheel.encoder.read() + 200);
+	Odin.rightWheel.encoder.write(Odin.rightWheel.encoder.read() + 200);
+	Odin.leftWheel.encoder.updateChange();
+	Odin.rightWheel.encoder.updateChange();
 
-	previous.encoders[LEFT] = current.encoders[LEFT];
-	previous.encoders[RIGHT] = current.encoders[RIGHT];
+	Odin.updateWheelsVelocities();
+	Odin.updateRobotPose();
+	Odin.updateWheelsPID();
 
-	current.encoders[LEFT] = LeftM.read();
-	current.encoders[RIGHT] = RightM.read();
+	front_distance_msg_.data = Odin.frontSensor.getDistance();
+	left_distance_msg_.data = Odin.leftSensor.getDistance();
+	right_distance_msg_.data = Odin.rightSensor.getDistance();
 
-	encUpdate();
+	front_distance_pub_.publish(&front_distance_msg_);
+	left_distance_pub_.publish(&left_distance_msg_);
+	right_distance_pub_.publish(&right_distance_msg_);
 
-	robotC.v = TWO_PI * ROBOT_R * (enc.left + enc.right) / ROBOT_C / 2.0
-			/  DELTA_T;
-	robotC.w = TWO_PI * ROBOT_R * (enc.right - enc.left) / ROBOT_C / 2.0
-			/ DELTA_T;
-
-	pos.t = atan2(sin(pos.t + robotC.w * DELTA_T),
-			cos(pos.t + robotC.w * DELTA_T));
-	pos.x = pos.x + robotC.v * DELTA_T * cos(pos.t);
-	pos.y = pos.y + robotC.v * DELTA_T * sin(pos.t);
-
-	leftWC = (robotC.v - (ROBOT_B )/ 2 * robotC.w) / ROBOT_R;
-	rightWC = (robotC.v + (ROBOT_B )/ 2 * robotC.w) / ROBOT_R;
-
-	leftWD = (robotD.v - ROBOT_B / 2 * robotD.w) / ROBOT_R;
-	rightWD = (robotD.v + ROBOT_B / 2 * robotD.w) / ROBOT_R;
-
-	int16_t forceL = PIDL.normalize(PIDL.calc(leftWD, leftWC));
-	digitalWrite(LEFT_MOTOR_DIR_PIN, forceL < 0);
-	analogWrite(LEFT_MOTOR_PIN, abs(forceL));
-
-	int16_t forceR = PIDR.normalize(PIDR.calc(rightWD, rightWC));
-	digitalWrite(RIGHT_MOTOR_DIR_PIN, forceL < 0);
-	analogWrite(RIGHT_MOTOR_PIN, abs(forceR));
-	Serial.println(
-			"X:" + String(pos.x) + " Y:" + String(pos.y) + " T:"+ String(pos.t));
+	pose_pub_.publish(&Odin.getPosition());
 
 }
-void encUpdate() {
-	enc.left = current.encoders[LEFT] - previous.encoders[LEFT];
-	enc.right = current.encoders[RIGHT] - previous.encoders[RIGHT];
-}
+

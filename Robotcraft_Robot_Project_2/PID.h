@@ -10,25 +10,35 @@
 
 #include <stdint.h>
 
-#include "Definitions.h"
 #include "Error.h"
+#include "Motor.h"
 
 //turns to second
 class PID {
-private:
 
-	float p,i,d;
+private:
+	const uint8_t P_TYPE = 0;
+	const uint8_t I_TYPE = 1;
+	const uint8_t D_TYPE = 2;
+	float p, i, d;
 	uint32_t timePrev;
 	uint32_t timeNew;
 
-    Error Proportional;
-    Error ProportionalPrev;
-    Error Integral;
-    Error Derivative;
+	Error Proportional;
+	Error ProportionalPrev;
+	Error Integral;
+	Error Derivative;
+	Motor Motor;
 public:
-	PID(float p,float i,float d);
-	void updateErrors(float desired,float real);
-	float calc(float desired,float real);
+	//old
+	PID(float p, float i, float d);
+	//new
+	PID(float p, float i, float d, uint8_t dirPin, uint8_t stepPin);
+	void apply(int16_t PIDresult);
+	//old
+	void updateErrors(float desired, float real);
+	float calc(float desired, float real);
+
 	int16_t normalize(float PIDresult);
 	virtual ~PID();
 	void setP(float p);

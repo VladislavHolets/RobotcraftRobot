@@ -7,8 +7,6 @@
 
 #include "Error.h"
 
-#include <stdint.h>
-
 Error::Error() {
 	// TODO Auto-generated constructor stub
 	this->type = P_TYPE;
@@ -29,7 +27,7 @@ Error::Error(uint8_t type) {
 }
 
 void Error::setValue(float value) {
-this->value=value;
+	this->value = value;
 }
 
 float Error::getValue() {
@@ -40,8 +38,8 @@ void Error::next(Error now, Error prev) {
 	if (this->type == P_TYPE) {
 		this->value = now.getValue();
 	} else if (this->type == I_TYPE) {
-		this->value+=now.getValue();
-	}else if(this->type==D_TYPE){
-		this->value=now.getValue()-prev.getValue();
+		this->value += now.getValue();
+	} else if (this->type == D_TYPE) {
+		this->value = now.getValue() - prev.getValue();
 	}
 }
