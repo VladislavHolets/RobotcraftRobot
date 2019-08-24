@@ -28,20 +28,25 @@ PID::PID(float p, float i, float d, uint8_t dirPin, uint8_t stepPin) :
 }
 
 float PID::calc(float desired, float real) {
+	if (desired < 0.0001 && desired > -0.0001) {
+		this->Proportional.setValue(0);
+		this->ProportionalPrev.setValue(0);
+		this->Integral.setValue(0);
+		this->Derivative.setValue(0);
+	}
 	this->timePrev = this->timeNew;
 	this->timeNew = millis();
 	//TODO: make one time stamp for all of the objects
 	this->updateErrors(desired, real);
-	float result =
-			this->p
-					* this->Proportional.getValue() + this->i * this->Integral.getValue() * DELTA_T
-					+ this->d * this->Derivative.getValue() / DELTA_T;
+	float result = this->p * this->Proportional.getValue()
+			+ this->i * this->Integral.getValue() * DELTA_T
+			+ this->d * this->Derivative.getValue() / DELTA_T;
 	return result;
 }
 
 int16_t PID::normalize(float PIDresult) {
-	if (abs(PIDresult) > 255) {
-		PIDresult = PIDresult / abs(PIDresult) * 255;
+	if (abs(PIDresult) > 200) {
+		PIDresult = PIDresult / abs(PIDresult) * 200;
 	}
 	return (int16_t) PIDresult;
 //TODO:function to normalize this value to analogWrite();

@@ -21,6 +21,7 @@ Motor::Motor(uint8_t dirPin, uint8_t stepPin) {
 	this->dirPin = dirPin;
 	this->stepPin = stepPin;
 	pinMode(this->dirPin, OUTPUT);
+
 }
 
 Motor::Motor() {

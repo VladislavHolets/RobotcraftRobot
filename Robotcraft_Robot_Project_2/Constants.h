@@ -17,8 +17,8 @@ const uint8_t RIGHT_SENSOR_PIN = A4;
 const uint8_t FRONT_SENSOR_PIN = A3;
 
 //Encoders pins
-const uint8_t LEFT_MOTOR_ENCODER_1_PIN = 18;
-const uint8_t LEFT_MOTOR_ENCODER_2_PIN = 19;
+const uint8_t LEFT_MOTOR_ENCODER_1_PIN = 19;
+const uint8_t LEFT_MOTOR_ENCODER_2_PIN = 18;
 const uint8_t RIGHT_MOTOR_ENCODER_1_PIN = 2;
 const uint8_t RIGHT_MOTOR_ENCODER_2_PIN = 3;
 
@@ -47,4 +47,5 @@ const uint16_t NEOPIXEL_NUM = 2;
 
 //Other
 const uint32_t BAUD = 115200;
+const uint8_t BEEP_PIN = 11;
 #endif /* CONSTANTS_H_ */

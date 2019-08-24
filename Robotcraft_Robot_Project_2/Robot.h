@@ -23,15 +23,18 @@ class Robot {
 	const uint8_t LEFT = 0;
 	const uint8_t RIGHT = 1;
 	const uint8_t FRONT = 2;
+
 	const float ROBOT_R = (1.7 / 100.0);
-	const float ROBOT_B = (9.5 / 100.0);
+	const float ROBOT_B = (9.3 / 100.0);
 	const float ROBOT_C = (298.0 * 12.0 * 2.33);
+
 	uint16_t pixels_size;
 
 	//RangeSensor rightSensor, frontSensor, leftSensor;
 	geometry_msgs::Twist desiredVelocity, realVelocity;
 	geometry_msgs::Pose2D position;
 public:
+	uint8_t beepPin;
 	RangeSensor rightSensor, frontSensor, leftSensor;
 	Wheel rightWheel, leftWheel;
 	Adafruit_NeoPixel pixels;
@@ -40,7 +43,8 @@ public:
 			float leftI, float leftD, uint8_t leftDirPin, uint8_t leftStepPin,
 			uint8_t rightEncoderPin1, uint8_t rightEncoderPin2, float rightP,
 			float rightI, float rightD, uint8_t rightDirPin,
-			uint8_t rightStepPin, uint8_t neoPixelPin, uint16_t neoPixelNum);
+			uint8_t rightStepPin, uint8_t neoPixelPin, uint16_t neoPixelNum,
+			uint8_t beepPin);
 
 	const geometry_msgs::Pose2D getPosition();
 	void setPosition(geometry_msgs::Pose2D position);

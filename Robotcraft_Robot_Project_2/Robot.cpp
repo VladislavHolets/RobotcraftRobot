@@ -20,7 +20,7 @@ Robot::Robot(uint8_t leftSensorPin, uint8_t rightSensorPin,
 		uint8_t leftDirPin, uint8_t leftStepPin, uint8_t rightEncoderPin1,
 		uint8_t rightEncoderPin2, float rightP, float rightI, float rightD,
 		uint8_t rightDirPin, uint8_t rightStepPin, uint8_t neoPixelPin,
-		uint16_t neoPixelNum) :
+		uint16_t neoPixelNum, uint8_t beepPin) :
 		leftSensor(leftSensorPin), rightSensor(rightSensorPin), frontSensor(
 				frontSensorPin), leftWheel(leftEncoderPin1, leftEncoderPin2,
 				leftP, leftI, leftD, leftDirPin, leftStepPin), rightWheel(
@@ -28,11 +28,17 @@ Robot::Robot(uint8_t leftSensorPin, uint8_t rightSensorPin,
 				rightDirPin, rightStepPin), pixels(neoPixelNum, neoPixelPin,
 		NEO_GRB + NEO_KHZ800) {
 	this->pixels_size = neoPixelNum;
+	this->beepPin = beepPin;
+	pinMode(this->beepPin, OUTPUT);
+	digitalWrite(this->beepPin, LOW);
 
 }
 
 const geometry_msgs::Pose2D Robot::getPosition() {
 	const geometry_msgs::Pose2D result(this->position);
+//	result.theta = this->position.theta;
+//	result.x = this->position.x;
+//	result.y = this->position.y;
 	return result;
 }
 
@@ -66,12 +72,12 @@ void Robot::setRealVelocity(geometry_msgs::Twist real) {
 void Robot::updateWheelsVelocities() {
 	this->realVelocity.linear.x =
 	TWO_PI * ROBOT_R
-			* (leftWheel.encoder.getChange() + rightWheel.encoder.getChange())
+			* (rightWheel.encoder.getChange() + leftWheel.encoder.getChange())
 			/ ROBOT_C / 2.0 / DELTA_T;
 	this->realVelocity.angular.z =
 	TWO_PI * ROBOT_R
-			* (leftWheel.encoder.getChange() - rightWheel.encoder.getChange())
-			/ ROBOT_C / 2.0 / DELTA_T;
+			* (rightWheel.encoder.getChange() - leftWheel.encoder.getChange())
+			/ ROBOT_C / ROBOT_B / DELTA_T;
 
 	this->leftWheel.setRealVelocity(
 			(this->realVelocity.linear.x

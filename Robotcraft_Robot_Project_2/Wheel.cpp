@@ -18,7 +18,7 @@ Wheel::Wheel(uint8_t encoderPin1, uint8_t encoderPin2, float p, float i,
 }
 
 float Wheel::getDesiredVelocity() const {
-	return desiredVelocity;
+	return this->desiredVelocity;
 }
 
 void Wheel::setDesiredVelocity(float desiredVelocity) {
@@ -26,7 +26,7 @@ void Wheel::setDesiredVelocity(float desiredVelocity) {
 }
 
 float Wheel::getRealVelocity() const {
-	return realVelocity;
+	return this->realVelocity;
 }
 
 void Wheel::setRealVelocity(float realVelocity) {

@@ -11,12 +11,14 @@
 #include <math.h>
 
 uint16_t RangeSensor::getValue() {
-	uint16_t samples[SAMPLES_SIZE];
-	uint16_t average;
+	//uint16_t samples[SAMPLES_SIZE];
+	uint16_t average = 0;
 	for (int i = 0; i < SAMPLES_SIZE; i++) {
 		//samples[i] = analogRead(this->pin);
 		//average += samples[i];
+		//noInterrupts();
 		average += analogRead(this->pin);
+		//interrupts();
 	}
 	average /= SAMPLES_SIZE;
 	/*	if (average > MAX || average < MIN) {
@@ -32,13 +34,15 @@ uint16_t RangeSensor::getValue() {
 	 *		}
 	 *	}
 	 */
+
 	return average;
+
 }
 
 float RangeSensor::getDistance() {
 	uint16_t value = this->getValue();
 	if (value != 0) {
-		return (float) (272600 * pow(this->getValue(), -1.631)) / 100.0;
+		return 155.27 * pow((float) this->getValue(), -1.195);
 	} else {
 		return 0;
 	}
