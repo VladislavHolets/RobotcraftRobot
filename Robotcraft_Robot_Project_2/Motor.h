@@ -10,15 +10,16 @@
 
 #include <stdint.h>
 
-class Motor {
-	uint8_t dirPin;
-	uint8_t stepPin;
+class Motor
+{
+  uint8_t dirPin;
+  //uint8_t stepPin;
 
 public:
-	Motor();
-	Motor(uint8_t dirPin, uint8_t stepPin);
-	uint8_t getDirPin() const;
-	uint8_t getStepPin() const;
+  Motor();
+  Motor(uint8_t dirPin); //, uint8_t stepPin);
+  uint8_t getDirPin() const;
+  //uint8_t getStepPin() const;
 };
 
 #endif /* MOTOR_H_ */

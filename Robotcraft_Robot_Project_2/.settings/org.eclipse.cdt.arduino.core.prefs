@@ -1,2 +1,2 @@
 eclipse.preferences.version=1
-libraries=["ros_lib","Adafruit NeoPixel"]
+libraries=["Adafruit BusIO","ros_lib","UIPEthernet","Adafruit NeoPixel","Adafruit MCP4728",{"package"\:"arduino","platform"\:"avr","library"\:"SPI"},{"package"\:"arduino","platform"\:"avr","library"\:"Wire"}]
